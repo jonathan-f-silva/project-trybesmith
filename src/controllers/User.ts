@@ -4,7 +4,7 @@ import userService from '../services/User';
 const create = async (req: Request, res: Response) => {
   const { username, classe, level, password } = req.body;
   const user = await userService.create({ username, classe, level, password });
-  res.send(user);
+  res.send({ token: user });
 };
 
 const getAll = async (_req: Request, res: Response) => {
