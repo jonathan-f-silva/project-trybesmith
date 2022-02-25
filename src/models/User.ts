@@ -1,5 +1,5 @@
-import { ResultSetHeader } from 'mysql2';
-import { NewUser, User } from '../interfaces/User';
+import { ResultSetHeader, RowDataPacket } from 'mysql2';
+import { NewUser, User, Login } from '../interfaces/User';
 import connection from './connection';
 
 const create = async (user: NewUser): Promise<User> => {
@@ -11,15 +11,27 @@ const create = async (user: NewUser): Promise<User> => {
   return { id: insertId, username, classe, level, password };
 };
 
-const getAll = async (): Promise<User[]> => {
-  const [users] = await connection.execute(`
-    SELECT * FROM Trybesmith.Users;
-  `);
-  console.log({ users });
-  return [];
+// const [rows] = await connection.execute<RowDataPacket[]>(`
+//   SELECT * FROM Trybesmith.Users;
+// `);
+// const users: User[] = rows.map((row) => {
+//   const { username, classe, level } = row;
+//   return { id: row.id, username, classe, level };
+// });
+const getAll = async (): Promise<User[]> => [];
+
+const getByLogin = async (login: Login) => {
+  const { username, password } = login;
+  
+  const [rows] = await connection.execute<RowDataPacket[]>(`
+    SELECT * FROM Trybesmith.Users WHERE username = ? AND password = ?;
+  `, [username, password]);
+
+  return rows as User[];
 };
 
 export default {
   create,
   getAll,
+  getByLogin,
 };

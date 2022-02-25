@@ -1,5 +1,5 @@
 import userModel from '../models/User';
-import { NewUser, User } from '../interfaces/User';
+import { NewUser, User, Login } from '../interfaces/User';
 import tokenService from './Token';
 
 const create = async (newUser: NewUser): Promise<string> => {
@@ -10,7 +10,10 @@ const create = async (newUser: NewUser): Promise<string> => {
 
 const getAll = async (): Promise<User[]> => userModel.getAll();
 
+const getByLogin = async (columns: Login) => userModel.getByLogin(columns);
+
 export default {
   create,
   getAll,
+  getByLogin,
 };

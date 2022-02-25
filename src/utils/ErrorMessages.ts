@@ -21,6 +21,7 @@ const ErrorMessageTypes: TErrorMessagesTypes = {
   PASSWORD_REQUIRED: 'Password is required',
   PASSWORD_STRING: 'Password must be a string',
   PASSWORD_MIN_LENGTH: 'Password must be longer than 7 characters',
+  LOGIN_FAILED: 'Username or password invalid',
 };
 
 const ErrorCodeByMessage: TErrorMessagesCodes = {
@@ -36,6 +37,7 @@ const ErrorCodeByMessage: TErrorMessagesCodes = {
   [ErrorMessageTypes.PASSWORD_REQUIRED]: HTTPCodes.BAD_REQUEST,
   [ErrorMessageTypes.PASSWORD_STRING]: HTTPCodes.UNPROCESSABLE_ENTITY,
   [ErrorMessageTypes.PASSWORD_MIN_LENGTH]: HTTPCodes.UNPROCESSABLE_ENTITY,
+  [ErrorMessageTypes.LOGIN_FAILED]: HTTPCodes.UNAUTHORIZED,
 };
 
 export { 

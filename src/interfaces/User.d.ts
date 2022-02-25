@@ -5,6 +5,11 @@ export interface NewUser {
   password: string;
 }
 
+export interface Login {
+  username: string;
+  password: string;
+}
+
 export interface User extends NewUser {
   id: number;
 }
