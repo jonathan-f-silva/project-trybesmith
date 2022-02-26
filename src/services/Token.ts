@@ -5,10 +5,12 @@ import { ErrorMessageTypes } from '../utils/ErrorMessages';
 
 dotenv.config();
 
+const SECRET = process.env.JWT_SECRET || 'xablau' as string;
+
 const create = (user: User): string => {
   const token = jwt.sign(
     { username: user.username },
-    process.env.JWT_SECRET || 'xablau' as string,
+    SECRET,
     { expiresIn: '1h' },
   );
   return token;
@@ -16,7 +18,7 @@ const create = (user: User): string => {
 
 const validate = (token: string) => {
   try {
-    const userData = jwt.verify(token, process.env.JWT_SECRET as string);
+    const userData = jwt.verify(token, SECRET);
     return userData as TokenData;
   } catch (error) {
     return { error: ErrorMessageTypes.TOKEN_INVALID } as ErrorData;
