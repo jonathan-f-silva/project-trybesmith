@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
-import { User } from '../interfaces/User';
+import { ErrorData, TokenData, User } from '../interfaces/User';
+import { ErrorMessageTypes } from '../utils/ErrorMessages';
 
 dotenv.config();
 
@@ -13,16 +14,16 @@ const create = (user: User): string => {
   return token;
 };
 
-const isValid = (token: string): boolean => {
+const validate = (token: string) => {
   try {
-    jwt.verify(token, process.env.JWT_SECRET as string);
-    return true;
+    const userData = jwt.verify(token, process.env.JWT_SECRET as string);
+    return userData as TokenData;
   } catch (error) {
-    return false;
+    return { error: ErrorMessageTypes.TOKEN_INVALID } as ErrorData;
   }
 };
 
 export default {
   create,
-  isValid,
+  validate,
 };

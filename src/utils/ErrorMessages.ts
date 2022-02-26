@@ -22,6 +22,14 @@ const ErrorMessageTypes: TErrorMessagesTypes = {
   PASSWORD_STRING: 'Password must be a string',
   PASSWORD_MIN_LENGTH: 'Password must be longer than 7 characters',
   LOGIN_FAILED: 'Username or password invalid',
+  TOKEN_NOT_FOUND: 'Token not found',
+  TOKEN_INVALID: 'Invalid token',
+  PRODUCT_REQUIRED: 'Name is required',
+  PRODUCT_STRING: 'Name must be a string',
+  PRODUCT_MIN_LENGTH: 'Name must be longer than 2 characters',
+  AMOUNT_REQUIRED: 'Amount is required',
+  AMOUNT_NUMBER: 'Amount must be a string',
+  AMOUNT_MIN_LENGTH: 'Amount must be longer than 2 characters',
 };
 
 const ErrorCodeByMessage: TErrorMessagesCodes = {
@@ -38,6 +46,14 @@ const ErrorCodeByMessage: TErrorMessagesCodes = {
   [ErrorMessageTypes.PASSWORD_STRING]: HTTPCodes.UNPROCESSABLE_ENTITY,
   [ErrorMessageTypes.PASSWORD_MIN_LENGTH]: HTTPCodes.UNPROCESSABLE_ENTITY,
   [ErrorMessageTypes.LOGIN_FAILED]: HTTPCodes.UNAUTHORIZED,
+  [ErrorMessageTypes.TOKEN_NOT_FOUND]: HTTPCodes.UNAUTHORIZED,
+  [ErrorMessageTypes.TOKEN_INVALID]: HTTPCodes.UNAUTHORIZED,
+  [ErrorMessageTypes.PRODUCT_REQUIRED]: HTTPCodes.BAD_REQUEST,
+  [ErrorMessageTypes.PRODUCT_STRING]: HTTPCodes.UNPROCESSABLE_ENTITY,
+  [ErrorMessageTypes.PRODUCT_MIN_LENGTH]: HTTPCodes.UNPROCESSABLE_ENTITY,
+  [ErrorMessageTypes.AMOUNT_REQUIRED]: HTTPCodes.BAD_REQUEST,
+  [ErrorMessageTypes.AMOUNT_NUMBER]: HTTPCodes.UNPROCESSABLE_ENTITY,
+  [ErrorMessageTypes.AMOUNT_MIN_LENGTH]: HTTPCodes.UNPROCESSABLE_ENTITY,
 };
 
 export { 
