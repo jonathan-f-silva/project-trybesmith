@@ -6,3 +6,7 @@ export interface NewOrder {
 export interface Order {
   order: NewOrder;
 }
+
+export interface ReturnedOrder extends NewOrder {
+  id: number;
+}

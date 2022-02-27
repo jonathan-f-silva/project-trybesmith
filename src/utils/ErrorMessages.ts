@@ -33,6 +33,7 @@ const ErrorMessageTypes: TErrorMessagesTypes = {
   PRODUCTS_REQUIRED: 'Products is required',
   PRODUCTS_MIN_LENGTH: 'Products can\'t be empty',
   PRODUCTS_ARRAY: 'Products must be an array of numbers',
+  ORDER_NOT_FOUND: 'Order not found',
 };
 
 const ErrorCodeByMessage: TErrorMessagesCodes = {
@@ -60,6 +61,7 @@ const ErrorCodeByMessage: TErrorMessagesCodes = {
   [ErrorMessageTypes.PRODUCTS_REQUIRED]: HTTPCodes.BAD_REQUEST,
   [ErrorMessageTypes.PRODUCTS_MIN_LENGTH]: HTTPCodes.UNPROCESSABLE_ENTITY,
   [ErrorMessageTypes.PRODUCTS_ARRAY]: HTTPCodes.UNPROCESSABLE_ENTITY,
+  [ErrorMessageTypes.ORDER_NOT_FOUND]: HTTPCodes.NOT_FOUND,
 };
 
 export { 
