@@ -30,6 +30,9 @@ const ErrorMessageTypes: TErrorMessagesTypes = {
   AMOUNT_REQUIRED: 'Amount is required',
   AMOUNT_NUMBER: 'Amount must be a string',
   AMOUNT_MIN_LENGTH: 'Amount must be longer than 2 characters',
+  PRODUCTS_REQUIRED: 'Products is required',
+  PRODUCTS_MIN_LENGTH: 'Products can\'t be empty',
+  PRODUCTS_ARRAY: 'Products must be an array of numbers',
 };
 
 const ErrorCodeByMessage: TErrorMessagesCodes = {
@@ -54,6 +57,9 @@ const ErrorCodeByMessage: TErrorMessagesCodes = {
   [ErrorMessageTypes.AMOUNT_REQUIRED]: HTTPCodes.BAD_REQUEST,
   [ErrorMessageTypes.AMOUNT_NUMBER]: HTTPCodes.UNPROCESSABLE_ENTITY,
   [ErrorMessageTypes.AMOUNT_MIN_LENGTH]: HTTPCodes.UNPROCESSABLE_ENTITY,
+  [ErrorMessageTypes.PRODUCTS_REQUIRED]: HTTPCodes.BAD_REQUEST,
+  [ErrorMessageTypes.PRODUCTS_MIN_LENGTH]: HTTPCodes.UNPROCESSABLE_ENTITY,
+  [ErrorMessageTypes.PRODUCTS_ARRAY]: HTTPCodes.UNPROCESSABLE_ENTITY,
 };
 
 export { 

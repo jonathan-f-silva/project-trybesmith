@@ -3,6 +3,7 @@ import { isError } from '../interfaces/User';
 import loginSchema from '../schemas/Login';
 import newUserSchema from '../schemas/User';
 import newProductSchema from '../schemas/Product';
+import newOrderSchema from '../schemas/Order';
 import tokenService from '../services/Token';
 import { ErrorCodeByMessage, ErrorMessageTypes } from '../utils/ErrorMessages';
 
@@ -48,9 +49,20 @@ const validateNewProduct = (req: Request, res: Response, next: NextFunction) => 
   next();
 };
 
+const validateNewOrder = (req: Request, res: Response, next: NextFunction) => {
+  const { products } = req.body;
+  const { error } = newOrderSchema.validate(products);
+  if (error) { 
+    const { message } = error.details[0];
+    return res.status(ErrorCodeByMessage[message]).json({ error: message });
+  }
+  next();
+};
+
 export {
   validateNewUser,
   validateLogin,
   validateToken,
   validateNewProduct,
+  validateNewOrder,
 };
