@@ -6,7 +6,7 @@ const create = async (newOrder: NewOrder): Promise<Order> => {
   return orderModel.create({ userId, products });
 };
 
-const getAll = async (): Promise<Order[]> => orderModel.getAll();
+const getAll = async (): Promise<ReturnedOrder[]> => orderModel.getAll();
 
 const getById = async (id: number): Promise<ReturnedOrder> => orderModel.getById(id);
 

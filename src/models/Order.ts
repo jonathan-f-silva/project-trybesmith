@@ -13,18 +13,27 @@ const create = async (order: NewOrder): Promise<Order> => {
   return { order: { userId, products } };
 };
 
-const getAll = async (): Promise<Order[]> => {
+const convertRowToOrder = (row: RowDataPacket): ReturnedOrder => {
+  const { id, userId, products } = row;
+  return {
+    id,
+    userId,
+    products: products.split(',').map((n : string) => Number(n)),
+  };
+};
+
+const getAll = async (): Promise<ReturnedOrder[]> => {
   const [rows] = await connection.query<RowDataPacket[]>(`
-    SELECT * FROM Trybesmith.Orders
-    INNER JOIN Trybesmith.Products
-    ON Trybesmith.Orders.id = Trybesmith.Products.orderId;
+    SELECT o.id,  o.userId, GROUP_CONCAT(p.id) AS products FROM Trybesmith.Orders AS o
+    INNER JOIN Trybesmith.Products AS p ON o.id = p.orderId
+    GROUP BY o.id;
   `);
-  return rows as Order[];
+  return rows.map(convertRowToOrder);
 };
 
 const getById = async (id: number): Promise<ReturnedOrder> => {
   const [[row]] = await connection.query<RowDataPacket[]>(`
-  SELECT o.userId, GROUP_CONCAT(p.id) AS products FROM Trybesmith.Orders AS o
+  SELECT o.id, o.userId, GROUP_CONCAT(p.id) AS products FROM Trybesmith.Orders AS o
   INNER JOIN Trybesmith.Products AS p ON o.id = p.orderId
   WHERE o.id = ?;
   `, [id]);
@@ -33,11 +42,7 @@ const getById = async (id: number): Promise<ReturnedOrder> => {
 
   if (result.userId === null) throw new Error('Order not found');
   
-  return {
-    id,
-    userId: row.userId,
-    products: row.products.split(',').map((n : string) => Number(n)),
-  };
+  return convertRowToOrder(row);
 };
 
 export default {
