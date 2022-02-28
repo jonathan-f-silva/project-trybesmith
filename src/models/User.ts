@@ -11,14 +11,12 @@ const create = async (user: NewUser): Promise<User> => {
   return { id: insertId, username, classe, level, password };
 };
 
-// const [rows] = await connection.execute<RowDataPacket[]>(`
-//   SELECT * FROM Trybesmith.Users;
-// `);
-// const users: User[] = rows.map((row) => {
-//   const { username, classe, level } = row;
-//   return { id: row.id, username, classe, level };
-// });
-const getAll = async (): Promise<User[]> => [];
+const getAll = async (): Promise<User[]> => {
+  const [rows] = await connection.execute<RowDataPacket[]>(`
+    SELECT * FROM Trybesmith.Users;
+  `);
+  return rows as User[];  
+};
 
 const getByLogin = async (login: Login) => {
   const { username, password } = login;

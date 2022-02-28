@@ -9,7 +9,9 @@ const create = async (req: Request, res: Response) => {
 
 const getAll = async (_req: Request, res: Response) => {
   const users = await userService.getAll();
-  res.status(200).send(users).end();
+  const list = users.map(({ id, username, classe, level }) =>
+    ({ id, username, classe, level }));
+  res.status(200).send(list).end();
 };
 
 export default {
