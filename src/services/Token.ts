@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
-import { ErrorData, TokenData, User } from '../interfaces/User';
+import { TokenData, User } from '../interfaces/User';
 import { ErrorMessageTypes } from '../utils/ErrorMessages';
 
 dotenv.config();
@@ -21,7 +21,7 @@ const validate = (token: string) => {
     const userData = jwt.verify(token, SECRET);
     return userData as TokenData;
   } catch (error) {
-    return { error: ErrorMessageTypes.TOKEN_INVALID } as ErrorData;
+    throw new Error(ErrorMessageTypes.TOKEN_INVALID);
   }
 };
 

@@ -2,7 +2,6 @@ import { NextFunction, Request, Response } from 'express';
 import Joi from 'joi';
 import rescue from 'express-rescue';
 
-import { isError } from '../interfaces/User';
 import loginSchema from '../schemas/Login';
 import newUserSchema from '../schemas/User';
 import newProductSchema from '../schemas/Product';
@@ -33,13 +32,8 @@ const validatePost = rescue((req: Request, _res: Response, next: NextFunction) =
 
 const validateToken = rescue((req: Request, res: Response, next: NextFunction) => {
   const { authorization: token } = req.headers;
-  if (!token) {
-    return res.status(401).json({ error: ErrorMessageTypes.TOKEN_NOT_FOUND }).end();
-  }
-  const userData = tokenService.validate(token);
-  if (isError(userData)) {
-    return res.status(401).json({ error: userData.error }).end();
-  }
+  if (!token) throw new Error(ErrorMessageTypes.TOKEN_NOT_FOUND);
+  tokenService.validate(token);
   next();
 });
 
