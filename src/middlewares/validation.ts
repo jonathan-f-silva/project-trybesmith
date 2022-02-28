@@ -1,33 +1,37 @@
 import { NextFunction, Request, Response } from 'express';
+import Joi from 'joi';
+import rescue from 'express-rescue';
+
 import { isError } from '../interfaces/User';
 import loginSchema from '../schemas/Login';
 import newUserSchema from '../schemas/User';
 import newProductSchema from '../schemas/Product';
 import newOrderSchema from '../schemas/Order';
 import tokenService from '../services/Token';
-import { ErrorCodeByMessage, ErrorMessageTypes } from '../utils/ErrorMessages';
+import { ErrorMessageTypes } from '../utils/ErrorMessages';
 
-const validateNewUser = (req: Request, res: Response, next: NextFunction) => {
-  const { username, classe, level, password } = req.body;
-  const { error } = newUserSchema.validate({ username, classe, level, password });
-  if (error) { 
-    const { message } = error.details[0];
-    return res.status(ErrorCodeByMessage[message]).json({ error: message });
-  }
-  next();
+type TRouteSchemas = {
+  [key: string]: Joi.ObjectSchema | Joi.ArraySchema;
 };
 
-const validateLogin = (req: Request, res: Response, next: NextFunction) => {
-  const { username, password } = req.body;
-  const { error } = loginSchema.validate({ username, password });
-  if (error) { 
-    const { message } = error.details[0];
-    return res.status(ErrorCodeByMessage[message]).json({ error: message });
-  }
-  next();
+const ROUTE_SCHEMAS: TRouteSchemas = {
+  '/login': loginSchema,
+  '/users': newUserSchema,
+  '/products': newProductSchema,
+  '/orders': newOrderSchema,
 };
 
-const validateToken = (req: Request, res: Response, next: NextFunction) => {
+const validatePost = rescue((req: Request, _res: Response, next: NextFunction) => {
+  const schema = ROUTE_SCHEMAS[req.originalUrl];
+  const { error } = schema.validate(req.body);
+  if (error) { 
+    const { message } = error.details[0];
+    throw new Error(message);
+  }
+  next();
+});
+
+const validateToken = rescue((req: Request, res: Response, next: NextFunction) => {
   const { authorization: token } = req.headers;
   if (!token) {
     return res.status(401).json({ error: ErrorMessageTypes.TOKEN_NOT_FOUND }).end();
@@ -37,32 +41,9 @@ const validateToken = (req: Request, res: Response, next: NextFunction) => {
     return res.status(401).json({ error: userData.error }).end();
   }
   next();
-};
-
-const validateNewProduct = (req: Request, res: Response, next: NextFunction) => {
-  const { name, amount } = req.body;
-  const { error } = newProductSchema.validate({ name, amount });
-  if (error) { 
-    const { message } = error.details[0];
-    return res.status(ErrorCodeByMessage[message]).json({ error: message });
-  }
-  next();
-};
-
-const validateNewOrder = (req: Request, res: Response, next: NextFunction) => {
-  const { products } = req.body;
-  const { error } = newOrderSchema.validate(products);
-  if (error) { 
-    const { message } = error.details[0];
-    return res.status(ErrorCodeByMessage[message]).json({ error: message });
-  }
-  next();
-};
+});
 
 export {
-  validateNewUser,
-  validateLogin,
+  validatePost,
   validateToken,
-  validateNewProduct,
-  validateNewOrder,
 };
