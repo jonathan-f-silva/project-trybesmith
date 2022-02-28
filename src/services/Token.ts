@@ -5,7 +5,7 @@ import { ErrorMessageTypes } from '../utils/ErrorMessages';
 
 dotenv.config();
 
-const SECRET = process.env.JWT_SECRET || 'xablau' as string;
+const SECRET = process.env.JWT_SECRET || 'secret' as string;
 
 const create = (user: User): string => {
   const token = jwt.sign(
